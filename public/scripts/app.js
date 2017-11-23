@@ -9,3 +9,18 @@ $(() => {
     }
   });;
 });
+
+$(() => {
+  $.ajax({
+    method: "GET",
+    url: "/api/resources"
+  }).done((resources) => {
+    for (resource of resources) {
+      console.log(resource);
+      $("<div>").text(resource.title).appendTo($("body"));
+      $("<div>").text(resource.url).appendTo($("body"));
+      $("<div>").text(resource.description).appendTo($("body"));
+      $("<p>").appendTo($("body"));
+    }
+  });;
+});
