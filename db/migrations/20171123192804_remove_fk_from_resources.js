@@ -13,7 +13,7 @@ exports.down = function(knex, Promise) {
     table.integer('user_id');
   }).then(function(){
     return knex.schema.table('resources', function(table){
-      table.foreign('user_id').references('users.id');
+      table.foreign('user_id').references('users.id').onDelete('CASCADE');
     })
   })
 };

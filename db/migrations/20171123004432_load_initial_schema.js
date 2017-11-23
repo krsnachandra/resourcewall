@@ -44,22 +44,22 @@ exports.up = function(knex, Promise) {
   ]).then(function(){
     return Promise.all([
       knex.schema.table('resources', function(table){
-        table.foreign('user_id').references('users.id');
+        table.foreign('user_id').references('users.id').onDelete('CASCADE');
       }),
       knex.schema.table('likes', function(table){
-        table.foreign('user_id').references('users.id');
-        table.foreign('resource_id').references('resources.id');
+        table.foreign('user_id').references('users.id').onDelete('CASCADE');
+        table.foreign('resource_id').references('resources.id').onDelete('CASCADE');
       }),
       knex.schema.table('tags', function(table){
-        table.foreign('resource_id').references('resources.id');
+        table.foreign('resource_id').references('resources.id').onDelete('CASCADE');
       }),
       knex.schema.table('comments', function(table){
-        table.foreign('user_id').references('users.id');
-        table.foreign('resource_id').references('resources.id');
+        table.foreign('user_id').references('users.id').onDelete('CASCADE');
+        table.foreign('resource_id').references('resources.id').onDelete('CASCADE');
       }),
       knex.schema.table('ratings', function(table){
-        table.foreign('user_id').references('users.id');
-        table.foreign('resource_id').references('resources.id');
+        table.foreign('user_id').references('users.id').onDelete('CASCADE');
+        table.foreign('resource_id').references('resources.id').onDelete('CASCADE');
       }),
     ])
   })
