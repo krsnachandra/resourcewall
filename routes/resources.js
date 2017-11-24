@@ -25,6 +25,35 @@ module.exports = (knex) => {
     })
   });
 
+  // New resource
+  router.get('/new', (req, res) => {
+    // TODO mark it as **Like** for the given user
+
+    res.render('new');
+  });
+
+  // Save new resource to database along with like and tags
+  router.post('/', (req, res) => {
+    console.log(req.body);
+    const { title, url, description, tag } = req.body;
+    // create a new row in resource table
+    knex("resources")
+      .insert({ url: url, title: title, description: description }).returning('id')
+      .then(function (resource_id) {
+        // create a new row in tag table
+        knex('tags')
+          .insert({ tag_name: tag, resource_id: parseInt(resource_id) })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error)
+      });
+    // TODO create a new row in like table
+    res.redirect('/');
+  });
+
   // new resource page with comment
   router.get('/:id', (req, res) => {
     knex
