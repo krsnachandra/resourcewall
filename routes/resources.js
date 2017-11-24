@@ -26,5 +26,19 @@ module.exports = (knex) => {
     });
   });
 
+  // new resource page with comment
+  router.get('/:id', (req, res) => {
+    console.log('i am here.');
+    const resource_id = req.params.id;
+    console.log(resource_id);
+    knex
+      .select("*")
+      .from("resources")
+      .where('id', resource_id)
+      .then((results) => {
+        res.send(results);
+      });
+  });
+
   return router;  
 }

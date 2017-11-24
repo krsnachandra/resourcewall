@@ -95,8 +95,22 @@ app.post('/resources', (req, res) => {
     });
     // TODO create a new row in like table
   res.redirect('/');
-})
+});
 
+// new resource page with comment
+app.get('/resources/:id', (req, res) => {
+  knex
+    .select("*")
+    .from("resources")
+    .where('id', req.params.id)
+    .then((resources) => {
+      if (resources.length) {
+        res.render('resources_id', {resource: resources[0]});
+      } else {
+        res.send(404);
+      }
+    });
+});
 
 app.listen(PORT, () => {
   console.log('Example app listening on port ' + PORT);
