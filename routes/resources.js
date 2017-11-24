@@ -16,17 +16,11 @@ module.exports = (knex) => {
           .where('resource_id', 'in', resources.map(r => r.id))
       ]);
     }).then(([resources, tags]) => {
-      // console.log('resources:', resources);
-      // console.log('tags:', tags);
       resources.forEach(resource => {
         resource.tags = tags.filter(tag => {
-          // console.log(tag.resource_id);
-          // console.log('resource id:', resource.id);
          return tag.resource_id === resource.id;
         })
-        // console.log(resource.tags);
       })
-      console.log(resources);
       res.render('index', { resources })
     })
   });
