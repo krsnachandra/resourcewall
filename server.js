@@ -41,25 +41,10 @@ app.use(express.static('public'));
 app.use('/api/users', usersRoutes(knex));
 app.use('/resources', resourcesRoutes(knex));
 
-
-
 //Home page
 app.get('/', (req, res) => {
 
   res.redirect('/resources');
-});
-
-
-app.get('/test',(req,res)=>{
-
-  knex('resources').join('tags', 'resources.id', 'tags.resource_id')
-    .select('resources.title', 'resources.id', 'tags.tag_name')
-    //.where('resources.id', '=', 3)
-    .then((result) => {
-      console.log(result);
-      res.send(result);
-    });
-
 });
 
 // New resource
