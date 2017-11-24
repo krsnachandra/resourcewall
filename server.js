@@ -39,7 +39,7 @@ app.use(express.static('public'));
 
 // Mount all resource routes
 app.use('/api/users', usersRoutes(knex));
-app.use('/api/resources', resourcesRoutes(knex));
+app.use('/resources', resourcesRoutes(knex));
 
 
 
@@ -60,12 +60,6 @@ app.get('/test',(req,res)=>{
       res.send(result);
     });
 
-});
-// Resources page
-app.get('/resources', (req, res) => {
-  // TODO like button
-
-  res.render('index');  
 });
 
 // New resource
@@ -97,20 +91,6 @@ app.post('/resources', (req, res) => {
   res.redirect('/');
 });
 
-// new resource page with comment
-app.get('/resources/:id', (req, res) => {
-  knex
-    .select("*")
-    .from("resources")
-    .where('id', req.params.id)
-    .then((resources) => {
-      if (resources.length) {
-        res.render('resources_id', {resource: resources[0]});
-      } else {
-        res.send(404);
-      }
-    });
-});
 
 app.listen(PORT, () => {
   console.log('Example app listening on port ' + PORT);
