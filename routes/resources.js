@@ -6,13 +6,29 @@ const router = express.Router();
 module.exports = (knex) => {
 
   router.get("/", (req, res) => {    
-    knex('resources').join('tags','resources.id','tags.resource_id')
-    .select('resources.title', 'resources.id', 'tags.tag_name')
-    //.where('resources.id','=',3)
-    .then((result)=>{
-      res.send(result);
-    });
-    res.render('index'); 
+  knex('resources')
+    // .join('likes', 'likes.resource_id', 'resources_id')
+    // .where('likes.user_id', req.session.user_id)
+    .then((resources) => {
+      return Promise.all([
+        resources,
+        knex('tags')
+          .where('resource_id', 'in', resources.map(r => r.id))
+      ]);
+    }).then(([resources, tags]) => {
+      // console.log('resources:', resources);
+      // console.log('tags:', tags);
+      resources.forEach(resource => {
+        resource.tags = tags.filter(tag => {
+          // console.log(tag.resource_id);
+          // console.log('resource id:', resource.id);
+         return tag.resource_id === resource.id;
+        })
+        // console.log(resource.tags);
+      })
+      console.log(resources);
+      res.render('index', { resources })
+    })
   });
 
   // new resource page with comment
