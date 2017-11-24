@@ -36,9 +36,12 @@ app.use('/styles', sass({
 }));
 app.use(express.static('public'));
 
+
 // Mount all resource routes
 app.use('/api/users', usersRoutes(knex));
 app.use('/api/resources', resourcesRoutes(knex));
+
+
 
 //Home page
 app.get('/', (req, res) => {
@@ -46,6 +49,18 @@ app.get('/', (req, res) => {
   res.redirect('/resources');
 });
 
+
+app.get('/test',(req,res)=>{
+
+  knex('resources').join('tags', 'resources.id', 'tags.resource_id')
+    .select('resources.title', 'resources.id', 'tags.tag_name')
+    //.where('resources.id', '=', 3)
+    .then((result) => {
+      console.log(result);
+      res.send(result);
+    });
+
+});
 // Resources page
 app.get('/resources', (req, res) => {
   // TODO like button
@@ -66,14 +81,20 @@ app.post('/resources', (req, res) => {
   const {title, url, description, tag} = req.body;
   // create a new row in resource table
   knex("resources")
-    .insert({ url: url, title: title, description: description })
-    .then(console.log('success.'))
+    .insert({ url: url, title: title, description: description }).returning('id')
+    .then(function (resource_id) {
+      // create a new row in tag table
+      knex('tags')
+        .insert({ tag_name: tag, resource_id: parseInt(resource_id) })
+        .catch((error) => {
+          console.error(error);
+        });
+    })
     .catch((error) => {
       console.error(error)
     });
-  knex.destroy();
-  //
-  res.send('Success!');
+    // TODO create a new row in like table
+  res.redirect('/');
 })
 
 
