@@ -73,9 +73,9 @@ module.exports = (knex) => {
             this.sum('rating as rs')
             .from('ratings')
             .where('resource_id', resource.id)
-            .groupBy('rating')
-            .as('alias')
-          }).as('avgRating')
+            .groupBy('id')
+            .as('ratings')
+          }).as('ignored_alias')
         ])
       })
     .then(([resource, comments, avgRating]) => {
@@ -93,16 +93,27 @@ module.exports = (knex) => {
 
   // post comments
   router.post('/:id', (req, res) => {
-    const resourceId = req.params.id;
-    const userId = 1;
+    const resource_id = req.params.id;
+    const user_id = 1;
     const comment = req.body.comment;
-
-    console.log(req.params.id);
     // create a new row in comments table
     knex("comments")
-      .insert({ resource_id: resourceId, user_id: userId, comment: comment })
+      .insert({ resource_id, user_id, comment })
       .then(() => {
-        res.redirect(`/resources/${resourceId}`);
+        res.redirect(`/resources/${resource_id}`);
+      });
+  });
+
+  // post ratings
+  router.post('/ratings/:id', (req, res) => {
+    const resource_id = req.params.id;
+    const user_id = 1;
+    const rating = req.body.rate;
+    // create a new row in ratings table
+    knex("ratings")
+      .insert({ resource_id, user_id, rating })
+      .then(() => {
+        res.redirect(`/resources/${resource_id}`);
       });
   });
 
