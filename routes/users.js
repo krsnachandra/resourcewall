@@ -48,8 +48,8 @@ module.exports = (knex) => {
   // User profile page
   router.get('/:id/profile', (req, res) => {
     const user_id = req.params.id;
-    knex("users")
-      .first("*")
+    knex('users')
+      .first('*')
       .where('id', user_id)
       .catch((error) => {
         console.error(error)
@@ -57,10 +57,28 @@ module.exports = (knex) => {
       .then((users) => {
         console.log(users);
         res.render('profile', {users});
-     
       });
   });
 
+  // update user profile
+  router.post('/:id/profile', (req, res) => {
+    const user_id = req.params.id;
+    const {username, email, password} = req.body;
+    if (!username || !email || !password){
+      res.send('enter all three input.');
+    } else {
+      knex('users')
+        .where('id', user_id)
+        .update({ username, email, password })
+        .catch((error) => {
+          console.error(error)
+        })
+        .then(() => {
+          res.redirect(`/users/${user_id}/profile`);
+        });
+    }
+      
+  });
 
 
   return router;

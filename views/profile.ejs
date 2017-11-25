@@ -12,8 +12,13 @@
 
   <body>
     <h1>Profile:</h1>
-    username: <%= users.username %><br>
-    email: <%= users.email %><br>
-    password: <%= users.password %><br>
+    <form method="post" action="/users/<%=users.id%>/profile">
+      username: <%= users.username %><br>
+      <input type="text" name="username" placeholder="new username"><br>
+      email: <%= users.email %><br>
+      <input type="email" name="email" placeholder="new email"><br>
+      <input type="password" name="password" placeholder="new password"><br>
+      <input type="submit" value="Submit">
+    </form>
   </body>
 </html>
