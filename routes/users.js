@@ -44,6 +44,8 @@ module.exports = (knex) => {
         password: passwordDigest
       });
     }).then(() => {
+      req.session.user_id = knex('users').select('user_id').where('username', username);
+    }).then(() => {
       res.redirect('/resources');
     }).catch((error) => {
       req.flash('error', error.message);
