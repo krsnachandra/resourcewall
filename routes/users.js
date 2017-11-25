@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router  = express.Router();
+const bcrypt = require('bcrypt');
 
 module.exports = (knex) => {
 
@@ -35,17 +36,16 @@ module.exports = (knex) => {
           return bcrypt.hash(req.body.password, 10);
         }
       })
-    })
-    // .then((passwordDigest) => {
-    //   return knex('users').insert({
-    //     email: req.body.email,
-    //     password_digest: passwordDigest
-    //   });
-    // }).then(() => {
-    //   req.flash('info', 'User account created successfully');
-    //   res.redirect('/');
-    // })
-  .catch((error) => {
+    }).then((passwordDigest) => {
+      return knex('users').insert({
+        username: req.body.username,
+        email: req.body.email,
+        password: passwordDigest
+      });
+    }).then(() => {
+      // req.flash('info', 'User account created successfully');
+      res.redirect('/resources');
+    }).catch((error) => {
       // FIXME do not show the user internal error messages such as the ones
       // from the database
       req.flash('error', error.message);
