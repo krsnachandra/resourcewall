@@ -59,31 +59,31 @@ module.exports = (knex) => {
     const resourceId = req.params.id;
     Promise.all([
       knex("resources")
-        .select("*")
+        .first("*")
         .where('id', resourceId),
       knex('comments')
         .select('comment')
         .where('resource_id', resourceId)
     ])
-    .then(([resources, comments]) => {
+    .then(([resource, comments]) => {
         return Promise.all([
-          resources,
+          resource,
           comments,
-          // console.log('resources: ' + resources[0].id)
           knex.avg('rs').from(function() {
             this.sum('rating as rs')
             .from('ratings')
-            .where('resource_id', resources[0].id)
+            .where('resource_id', resource.id)
             .groupBy('rating')
             .as('alias')
           }).as('avgRating')
         ])
       })
-    .then(([resources, comments, avgRating]) => {
-      if (resources.length) {
-        res.render('resources_id', { resource: resources[0], comments: comments, avg: avgRating[0].avg });
+    .then(([resource, comments, avgRating]) => {
+      if (resource) {
+        const avg = Number(avgRating[0].avg).toFixed(1);
+        res.render('resources_id', { resource, comments, avg });
       } else {
-          res.send(404);
+          res.sendStatus(404);
         }
     }).catch((error) => {
         console.error(error)
