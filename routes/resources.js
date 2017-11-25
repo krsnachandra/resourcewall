@@ -34,12 +34,12 @@ module.exports = (knex) => {
 
   // Save new resource to database along with like and tags
   router.post('/', (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const { title, url, description, tag } = req.body;
     // create a new row in resource table
     knex("resources")
       .insert({ url: url, title: title, description: description }).returning('id')
-      .then(function (resource_id) {
+      .then((resource_id) => {
         // create a new row in tag table
         knex('tags')
           .insert({ tag_name: tag, resource_id: parseInt(resource_id) })
@@ -54,11 +54,10 @@ module.exports = (knex) => {
     res.redirect('/');
   });
 
-  // new resource page with comment
+  // new resource page with comments
   router.get('/:id', (req, res) => {
-    knex
+    knex("resources")
       .select("*")
-      .from("resources")
       .where('id', req.params.id)
       .then((resources) => {
         if (resources.length) {
@@ -67,6 +66,31 @@ module.exports = (knex) => {
           res.send(404);
         }
       });
+  });
+
+  // post comments
+  router.post('/:id', (req, res) => {
+    const resourceId = req.params.id;
+    const userId = 1;
+    const comment = req.body.comment;
+
+    console.log(req.params.id);
+    // create a new row in comments table
+    knex("comments")
+      .insert({ resource_id: resourceId, user_id: userId, comment: comment }).returning('resource_id')
+      .then((resource_id) => {
+        // select all comments in comments table
+        knex('comments')
+          .select('comment')
+          .where('resource_id', 'resourceId')
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error)
+      });
+    res.send('success');
   });
 
   return router;  
