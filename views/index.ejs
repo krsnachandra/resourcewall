@@ -14,14 +14,13 @@
     <h1>Hello World!</h1>
     <a href="/resources/new"><h2>Create a new Resources!</h2></a>
     <% for (let resource of resources){ %>
-       <%= resource.title %><br>
-       <%= resource.url %><br>
-       <%= resource.description %><br>
-       <% for (let tag of resource.tags){ %>
-         tag:<%= tag.tag_name %><br>
-       <% } %>
-       
-    <%} %>
+      <%= resource.title %><br>
+      <%= resource.url %><br>
+      <%= resource.description %><br>
+      <% for (let tag of resource.tags){ %>
+          tag:<%= tag.tag_name %><br>
+      <% } %>
+    <% } %>
    
   </body>
 </html>
