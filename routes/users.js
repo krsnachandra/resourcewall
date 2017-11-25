@@ -10,49 +10,43 @@ module.exports = (knex) => {
     res.render('login', { errors: req.flash('error') });
   });
 
+// Register a new user
   router.post("/", (req, res) => {
-    // refactor with req.body destructuring
-    if (!req.body.username || !req.body.email || !req.body.password) {
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
       req.flash('error', 'Username, email, and password are all required');
       res.redirect('/');
       return;
     }
-    knex('users').select(1).where('username', req.body.username).then((rows) => {
+    knex('users').select(1).where('username', username).then((rows) => {
       if (rows.length) {
-        // bad news, the email is already in there
+        // username taken
         return Promise.reject({
           message: 'That username is already registered'
         });
       }
     }).then(() => {
-      return knex ('users').select(1).where('email', req.body.email).then((rows) => {
+      return knex ('users').select(1).where('email', email).then((rows) => {
         if (rows.length) {
-          // bad news, the email is already in there
+          // email taken
           return Promise.reject({
             message: 'Email address is already registered'
           });
         } else {
           // all good
-          return bcrypt.hash(req.body.password, 10);
+          return bcrypt.hash(password, 10);
         }
       })
     }).then((passwordDigest) => {
       return knex('users').insert({
-        username: req.body.username,
-        email: req.body.email,
+        username,
+        email,
         password: passwordDigest
       });
     }).then(() => {
-      // req.flash('info', 'User account created successfully');
       res.redirect('/resources');
     }).catch((error) => {
-      // FIXME do not show the user internal error messages such as the ones
-      // from the database
       req.flash('error', error.message);
-      // FIXME in a real app some errors are expected and don't need to be logged
-      // FIXME in a real app errors are typically sent to a custom logging system
-      // and not just sent to the console
-      console.error(error);
       res.redirect('/');
     });
   });
