@@ -18,6 +18,12 @@
       <%= resource.title %><br>
       <%= resource.url %><br>
       <%= resource.description %><br>
+      comments:<br>
+      <% for (let comment of comments){ %>
+        <%= comment.comment %><br>
+      <%} %>
+      average rating:<br>
+      <%= avg %><br>
       </div>
       <form method="post" action='/resources/<%=resource.id%>'>
         Comment: <input type="text" name="comment"><br>
