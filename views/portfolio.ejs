@@ -79,7 +79,7 @@
 
           <% for(let resource of resources) { %>
               <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12 work-item">
-                <a href="work.html">
+                <a href="/resources/<%= resource.id %>">
                   <h3 class="fh5co-work-title"><%= resource.title %></h3>
 							    <p><%= resource.description %></p>
                   <% for (let tag of resource.tags){ %>
