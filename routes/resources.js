@@ -56,16 +56,18 @@ module.exports = (knex) => {
 
   // new resource page with comments
   router.get('/:id', (req, res) => {
-    knex("resources")
-      .select("*")
-      .where('id', req.params.id)
-      .then((resources) => {
-        if (resources.length) {
-          res.render('resources_id', { resource: resources[0] });
-        } else {
-          res.send(404);
-        }
-      });
+    const resourceId = req.params.id;
+    Promise.all([
+      knex("resources")
+        .select("*")
+        .where('id', resourceId),
+      knex('comments')
+        .select('comment')
+        .where('resource_id', resourceId)
+    ])
+    .then(([resources, comments]) => {
+      res.render('resources_id', { resource: resources[0], comments: comments });
+    });
   });
 
   // post comments
@@ -77,20 +79,10 @@ module.exports = (knex) => {
     console.log(req.params.id);
     // create a new row in comments table
     knex("comments")
-      .insert({ resource_id: resourceId, user_id: userId, comment: comment }).returning('resource_id')
-      .then((resource_id) => {
-        // select all comments in comments table
-        knex('comments')
-          .select('comment')
-          .where('resource_id', 'resourceId')
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error)
+      .insert({ resource_id: resourceId, user_id: userId, comment: comment })
+      .then(() => {
+        res.redirect(`/resources/${resourceId}`);
       });
-    res.send('success');
   });
 
   return router;  
