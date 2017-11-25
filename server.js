@@ -37,10 +37,17 @@ app.use('/styles', sass({
 }));
 app.use(express.static('public'));
 app.use(session({
-  secret: process.env.SESSION_SECRET
+  secret: process.env.SESSION_SECRET || 'DefaultSecretIfENVSecretIsntSet'
 }));
 
 app.use(flash());
+
+// set user_id as local variable that can send to all views
+app.use((req, res, next) => {
+  res.locals.user_id = req.session.user_id;
+  // pass entire `users` string Object to .ejs files
+  next();
+});
 
 // Mount all resource routes
 app.use('/users', usersRoutes(knex));
