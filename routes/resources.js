@@ -7,8 +7,8 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
   knex('resources')
-    // .join('likes', 'likes.resource_id', 'resources_id')
-    // .where('likes.user_id', req.session.user_id)
+    .join('likes', 'likes.resource_id', 'resources.id')
+    .where('likes.user_id', req.session.user_id)
     .then((resources) => {
       return Promise.all([
         resources,
