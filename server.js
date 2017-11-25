@@ -55,8 +55,12 @@ app.use('/resources', resourcesRoutes(knex));
 
 //Home page
 app.get('/', (req, res) => {
-  res.redirect('/users');
-  // res.redirect('/resources');
+  // console.log('cookie:', req.session);
+  if (!req.session.user_id) {
+    res.redirect('/users');
+  } else {
+    res.redirect('/resources');
+  }
 });
 
 app.listen(PORT, () => {

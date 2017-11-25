@@ -44,7 +44,10 @@ module.exports = (knex) => {
         password: passwordDigest
       });
     }).then(() => {
-      req.session.user_id = knex('users').select('user_id').where('username', username);
+      console.log('set a cookie');
+       return knex('users').select('id').where('username', username)
+    }).then((rs)=>{
+      req.session.user_id = rs[0].id;
     }).then(() => {
       res.redirect('/resources');
     }).catch((error) => {
