@@ -8,7 +8,8 @@ const express     = require('express');
 const bodyParser  = require('body-parser');
 const sass        = require('node-sass-middleware');
 const app         = express();
-
+const flash = require('connect-flash');
+const session = require('cookie-session');
 const knexConfig  = require('./knexfile');
 const knex        = require('knex')(knexConfig[ENV]);
 const morgan      = require('morgan');
@@ -35,16 +36,20 @@ app.use('/styles', sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static('public'));
+app.use(session({
+  secret: process.env.SESSION_SECRET
+}));
 
+app.use(flash());
 
 // Mount all resource routes
-app.use('/api/users', usersRoutes(knex));
+app.use('/users', usersRoutes(knex));
 app.use('/resources', resourcesRoutes(knex));
 
 //Home page
 app.get('/', (req, res) => {
-
-  res.redirect('/resources');
+  res.redirect('/users');
+  // res.redirect('/resources');
 });
 
 app.listen(PORT, () => {

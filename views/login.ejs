@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login or Register</title>
+
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <form action="/users/login" method="post">
+        <h1>Login</h1>
+          <p>
+            <label for="login-email">Email</label>
+            <input id="login-email" name="email">
+          </p>
+          <p>
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password">
+          </p>
+          <p>
+            <button>Login</button>
+          </p>
+        </form>
+      <form action="/users" method="post">
+        <h2>Register</h2>
+        <p>
+          <label for="username">Username</label>
+          <input id="username" name="username">
+        </p>
+        <p>
+          <label for="register-email">Email</label>
+          <input id="register-email" name="email">
+        </p>
+        <p>
+          <label for="register-password">Password</label>
+          <input id="register-password" name="password" type="password">
+        </p>
+        <p>
+          <button>Create Account</button>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>

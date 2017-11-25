@@ -6,13 +6,43 @@ const router  = express.Router();
 module.exports = (knex) => {
 
   router.get("/", (req, res) => {
-    knex
-      .select("*")
-      .from("users")
-      .then((results) => {
-        res.json(results);
-    });
+    res.render('login')
   });
 
+  router.post("/", (req, res) => {
+    if (!req.body.username || !req.body.email || !req.body.password) {
+      req.flash('error', 'Username, email, and password are all required');
+      res.redirect('/');
+      return;
+    }
+    knex('users').select(1).where('email', req.body.email).then((rows) => {
+      if (rows.length) {
+        // bad news, the email is already in there
+        return Promise.reject({
+          message: 'Email address is not unique'
+        });
+      } else {
+        // all good
+        return bcrypt.hash(req.body.password, 10);
+      }
+    }).then((passwordDigest) => {
+      return knex('users').insert({
+        email: req.body.email,
+        password_digest: passwordDigest
+      });
+    }).then(() => {
+      req.flash('info', 'User account created successfully');
+      res.redirect('/');
+    }).catch((error) => {
+      // FIXME do not show the user internal error messages such as the ones
+      // from the database
+      req.flash('error', error.message);
+      // FIXME in a real app some errors are expected and don't need to be logged
+      // FIXME in a real app errors are typically sent to a custom logging system
+      // and not just sent to the console
+      console.error(error);
+      res.redirect('/');
+    });
+  });
   return router;
-}
+};
