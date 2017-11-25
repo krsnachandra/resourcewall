@@ -12,14 +12,14 @@
 
   <body>
     <h1>Resource</h1>
-    <div>resource_id: <%=resource.id%></div>
-    <form method="post">
+    
+    <form method="post" action='/resources/<%=resource.id%>'>
       <div>
       <%= resource.title %><br>
       <%= resource.url %><br>
       <%= resource.description %><br>
       </div>
-      Comment: <input type="text" name="title"><br>
+      Comment: <input type="text" name="comment"><br>
       <input type="submit" value="Submit">
     </form>
   </body>
