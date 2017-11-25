@@ -44,5 +44,24 @@ module.exports = (knex) => {
       res.redirect('/');
     });
   });
+
+  // User profile page
+  router.get('/:id/profile', (req, res) => {
+    const user_id = req.params.id;
+    knex("users")
+      .first("*")
+      .where('id', user_id)
+      .catch((error) => {
+        console.error(error)
+      })
+      .then((users) => {
+        console.log(users);
+        res.render('profile', {users});
+     
+      });
+  });
+
+
+
   return router;
 };
