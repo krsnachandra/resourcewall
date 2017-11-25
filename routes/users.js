@@ -56,6 +56,41 @@ module.exports = (knex) => {
     });
   });
 
+  // Login
+  router.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      req.flash('error', 'Both email and password are required to login');
+      res.redirect('/');
+      return;
+    }
+    knex('users').select(1).where('email', email).then((rows) => {
+      if (!rows.length) {
+        // username taken
+        return Promise.reject({
+          message: 'That email is not registered'
+        });
+      }
+    })
+    // if (!findUserByEmail(email)) {
+    //   req.flash('error', 'That email is not registered');
+    //   res.redirect('/');
+    //   return;
+    // } else {
+    //   const user = findUserByEmail(email);
+    //   if (!bcrypt.compareSync(password, user.password)) {
+    //     res.status(403).send('403: password does not match');
+    //   } else {
+    //     req.session.user_id = user.id;
+    //     res.redirect('/urls');
+    //   }
+    // }
+    .catch((error) => {
+      req.flash('error', error.message);
+      res.redirect('/');
+    });
+  });
+
   // User profile page
   router.get('/:id/profile', (req, res) => {
     const user_id = req.params.id;
