@@ -21,7 +21,7 @@ module.exports = (knex) => {
          return tag.resource_id === resource.id;
         })
       })
-      res.render('index', { resources })
+      res.render('portfolio', { resources })
     })
   });
 
