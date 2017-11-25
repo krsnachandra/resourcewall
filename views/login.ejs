@@ -27,6 +27,12 @@
             <button>Login</button>
           </p>
         </form>
+        <% if (errors.length) { %>
+          <% errors.forEach((error) => { %>
+            <p><%= error %></p>
+          <% }) %>
+        <% } %>
+
       <form action="/users" method="post">
         <h2>Register</h2>
         <p>

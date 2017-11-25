@@ -6,34 +6,46 @@ const router  = express.Router();
 module.exports = (knex) => {
 
   router.get("/", (req, res) => {
-    res.render('login')
+    res.render('login', { errors: req.flash('error') });
   });
 
   router.post("/", (req, res) => {
+    // refactor with req.body destructuring
     if (!req.body.username || !req.body.email || !req.body.password) {
       req.flash('error', 'Username, email, and password are all required');
       res.redirect('/');
       return;
     }
-    knex('users').select(1).where('email', req.body.email).then((rows) => {
+    knex('users').select(1).where('username', req.body.username).then((rows) => {
       if (rows.length) {
         // bad news, the email is already in there
         return Promise.reject({
-          message: 'Email address is not unique'
+          message: 'That username is already registered'
         });
-      } else {
-        // all good
-        return bcrypt.hash(req.body.password, 10);
       }
-    }).then((passwordDigest) => {
-      return knex('users').insert({
-        email: req.body.email,
-        password_digest: passwordDigest
-      });
     }).then(() => {
-      req.flash('info', 'User account created successfully');
-      res.redirect('/');
-    }).catch((error) => {
+      return knex ('users').select(1).where('email', req.body.email).then((rows) => {
+        if (rows.length) {
+          // bad news, the email is already in there
+          return Promise.reject({
+            message: 'Email address is already registered'
+          });
+        } else {
+          // all good
+          return bcrypt.hash(req.body.password, 10);
+        }
+      })
+    })
+    // .then((passwordDigest) => {
+    //   return knex('users').insert({
+    //     email: req.body.email,
+    //     password_digest: passwordDigest
+    //   });
+    // }).then(() => {
+    //   req.flash('info', 'User account created successfully');
+    //   res.redirect('/');
+    // })
+  .catch((error) => {
       // FIXME do not show the user internal error messages such as the ones
       // from the database
       req.flash('error', error.message);
@@ -77,7 +89,7 @@ module.exports = (knex) => {
           res.redirect(`/users/${user_id}/profile`);
         });
     }
-      
+
   });
 
 
