@@ -66,26 +66,23 @@ module.exports = (knex) => {
     }
     knex('users').select(1).where('email', email).then((rows) => {
       if (!rows.length) {
-        // username taken
+        // email not in users db
         return Promise.reject({
           message: 'That email is not registered'
         });
       }
-    })
-    // if (!findUserByEmail(email)) {
-    //   req.flash('error', 'That email is not registered');
-    //   res.redirect('/');
-    //   return;
-    // } else {
-    //   const user = findUserByEmail(email);
-    //   if (!bcrypt.compareSync(password, user.password)) {
-    //     res.status(403).send('403: password does not match');
-    //   } else {
-    //     req.session.user_id = user.id;
-    //     res.redirect('/urls');
-    //   }
-    // }
-    .catch((error) => {
+    }).then(()=>{
+      return knex('users').select('*').where('email', email).then((user) => {
+        if (!bcrypt.compareSync(password, user[0].password)) {
+          return Promise.reject({
+            message: 'Incorrect password'
+          });
+        } else {
+          req.session.user_id = user[0].id;
+          res.redirect('/resources');
+        }
+      })
+    }).catch((error) => {
       req.flash('error', error.message);
       res.redirect('/');
     });
