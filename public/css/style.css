@@ -101,6 +101,7 @@ body {
   font-size: 20px;
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.5);
+  background-color: floralwhite;
 }
 @media screen and (max-width: 992px) {
   body {
@@ -124,7 +125,7 @@ p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #000;
+  color: #032E3C;
   font-family: "Montserrat", Arial, sans-serif;
   font-weight: 700;
   margin: 0 0 30px 0;
@@ -358,7 +359,9 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
 }
 
 .work-item {
-  margin-bottom: 30px;
+  display: flex;
+  margin-bottom: 40px;
+  flex-direction: column;
 }
 .work-item a {
   border: none;
@@ -371,16 +374,31 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
+  order: 1;
 }
 .work-item a h3 {
   font-size: 20px;
-  color: #000;
+  color: #D25150;
   margin-bottom: 10px;
+  order: 2;
 }
 .work-item a p {
   font-size: 14px;
-  color: #cccccc;
-  margin-bottom: 0;
+  font-weight: normal;
+  color: #676767;
+  margin: auto;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  order: 3;
+}
+
+.work-item a label {
+  font-weight: normal;
+  /* margin-left: 200px;  */
+  order: 4;
+
 }
 .work-item a:hover, .work-item a:active, .work-item a:focus {
   text-decoration: none;
