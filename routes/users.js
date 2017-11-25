@@ -49,7 +49,7 @@ module.exports = (knex) => {
     }).then((rs)=>{
       req.session.user_id = rs[0].id;
     }).then(() => {
-      res.redirect('/resources');
+      res.redirect('/resources/new');
     }).catch((error) => {
       req.flash('error', error.message);
       res.redirect('/');

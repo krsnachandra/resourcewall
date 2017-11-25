@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
   if (!req.session.user_id) {
     res.redirect('/users');
   } else {
-    res.redirect('/resources/new');
+    res.redirect('/resources');
   }
 });
 
