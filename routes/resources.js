@@ -81,7 +81,6 @@ module.exports = (knex) => {
     .then(([resource, comments, avgRating]) => {
       if (resource) {
         const avg = Number(avgRating[0].avg).toFixed(1);
-        console.log('avg', avg);
         res.render('resources_id', { resource, comments, avg });
       } else {
           res.sendStatus(404);
