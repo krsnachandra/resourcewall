@@ -341,6 +341,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  margin-bottom: 8px;
 }
 
 a {
