@@ -107,7 +107,7 @@ module.exports = (knex) => {
   // post comments
   router.post('/:id', (req, res) => {
     const resource_id = req.params.id;
-    const user_id = 1;
+    const user_id = req.session.user_id;
     const comment = req.body.comment;
     // create a new row in comments table
     knex("comments")
@@ -120,7 +120,7 @@ module.exports = (knex) => {
   // post ratings
   router.post('/ratings/:id', (req, res) => {
     const resource_id = req.params.id;
-    const user_id = 1;
+    const user_id = req.session.user_id;
     const rating = req.body.rate;
     // create a new row in ratings table
     knex("ratings")
