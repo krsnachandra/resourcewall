@@ -65,12 +65,25 @@
       <div class="fh5co-narrow-content">
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft"><%=resource.title %></h2>
         <div class="animate-box" data-animate-effect="fadeInLeft">
+          <div class="likeButton" data-animate-effect="fadeInLeft">
+            <% if (!like[0]) { %>
+              <form method="post" action="/resources/<%=resource.id%>/like">
+                <input type="image" src="/images/unlike.png" width="48" height="48">
+              </form>
+            <% } else { %>
+              <form method="post" action="/resources/<%=resource.id%>/delete">
+                <input type="image" src="/images/like.png" width="48" height="48">
+              </form>
+            <% } %>
+          </div>
+        
           <b><%= resource.description %><br></b>
           <a href = "<%= resource.url %>" ><%= resource.url %></a><br>
           <% for (let tag of tags){ %>
             <label class="label label-primary"><%= tag.tag_name %></label>
           <% } %>
-          <br><h4>Average rating: <%= avg %></h4>
+          <br>
+          <h3>Average rating: <%= avg %></h3>
           <form method="post" action="/resources/ratings/<%=resource.id%>">
             <select name="rate">
               <option value="1">1</option>
@@ -82,24 +95,11 @@
             </select>
           </form>
 
-          <div>
-            <% if (!like[0]) { %>
-            <form method="post" action="/resources/<%=resource.id%>/like">
-                <button>Like</button>
-              </form>
-
-            <% } else { %>
-              <form method="post" action="/resources/<%=resource.id%>/delete">
-                <button>Unlike</button>
-              </form>
-            <% } %>
-          </div>
-
           <div class="commentBox">
             <h3>Comments</h3>
             <ul class="commentList">
               <% for(let comment of comments) { %>
-                 <li><%= comment.username %></li><li class="list-group-item"><%= comment.comment %></li>
+                 <li><%= comment.username %>:</li><li class="list-group-item"><%= comment.comment %></li>
               <%} %>
             </ul>
           </div>
