@@ -71,6 +71,11 @@
     <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">
       Change your profile
     </h2>
+    <% if (errors.length) { %>
+      <% errors.forEach((error) => { %>
+        <h3><%= error %>!</h3>
+      <% }) %>
+    <% } %>
     <div class="row animate-box" data-animate-effect="fadeInLeft">
       <div class="container">
         <form action="/users/<%=user.id%>/profile" method="POST">

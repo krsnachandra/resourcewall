@@ -106,7 +106,7 @@ module.exports = (knex) => {
       .first('*')
       .where('id', user_id)
       .then((user) => {
-        res.render('profile', {user});
+        res.render('profile', {user, errors: req.flash('error') });
       }).catch((error) => {
         console.error(error)
       })
@@ -120,10 +120,12 @@ module.exports = (knex) => {
     if(req.session.user_id !== user_id) {
       res.redirect('/');
     // if user not update all three profile
-    }else if(!username || !email || !password) {
-      res.send('enter all three input.');
+    } else if(!username || !email || !password) {
+      req.flash('error', 'Please fill in all three fields to update');
+      res.redirect(`/users/${user_id}/profile`);
+      return;
     // update user profile in users table
-    }else {
+    } else {
       // hash the new password
       let updatePromise = new Promise((resolve) => {
         // if hash successful go to next promise
@@ -137,7 +139,8 @@ module.exports = (knex) => {
       }).then(() => {
         res.redirect(`/users/${user_id}/profile`);
       }).catch((error) => {
-        console.error(error)
+        req.flash('error', error.message);
+        res.redirect(`/users/${user_id}/profile`);
       });
     }
   });
