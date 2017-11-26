@@ -88,6 +88,12 @@ module.exports = (knex) => {
     });
   });
 
+    // Logout
+  router.post("/logout", (req, res) => {
+    req.session = null;
+    res.redirect('/');
+  });
+
   // User profile page
   router.get('/:id/profile', (req, res) => {
     const user_id = req.params.id;
