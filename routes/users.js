@@ -19,21 +19,20 @@ module.exports = (knex) => {
       return;
     }
     knex('users').select(1).where('username', username).then((rows) => {
+      // check if username already exist
       if (rows.length) {
-        // username taken
         return Promise.reject({
           message: 'That username is already registered'
         });
-      }
+      }// else check if email already exist
     }).then(() => {
       return knex ('users').select(1).where('email', email).then((rows) => {
         if (rows.length) {
-          // email taken
           return Promise.reject({
             message: 'Email address is already registered'
           });
         } else {
-          // all good
+          // encrypt the password and return it
           return bcrypt.hash(password, 10);
         }
       })
@@ -43,11 +42,13 @@ module.exports = (knex) => {
         email,
         password: passwordDigest
       });
+      // get userid from user table
     }).then(() => {
-      console.log('set a cookie');
-       return knex('users').select('id').where('username', username)
+      return knex('users').select('id').where('username', username);
+      // set a cookie
     }).then((rs)=>{
       req.session.user_id = rs[0].id;
+      // new register go to create new resource page
     }).then(() => {
       res.redirect('/resources/new');
     }).catch((error) => {
