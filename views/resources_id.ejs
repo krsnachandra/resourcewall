@@ -79,6 +79,14 @@
             </select>
           </form>
 
+          <div>
+            <% if (like) { %>
+              <button type="button" method="delete" action="/resources/<%=resource.id%>/like">Unlike</button>
+            <% } else { %>
+              <button type="button" method="post" action="/resources/<%=resource.id%>/like">Like</button>
+            <% } %>
+          </div>
+
           <div class="commentBox">
             <h3>Comments</h3>
             <ul class="commentList">
