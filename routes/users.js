@@ -96,10 +96,11 @@ module.exports = (knex) => {
 
   // User profile page
   router.get('/:id/profile', (req, res) => {
-    const user_id = req.params.id;
-    if (!(req.session.user_id == user_id)) {
-      res.redirect('/resources');
-    }
+    const user_id = Number(req.params.id);
+    // if user is not log in redirect to home page
+    if (req.session.user_id !== user_id) {
+      res.redirect('/');
+    }// else read profile
     knex('users')
       .first('*')
       .where('id', user_id)
@@ -112,14 +113,15 @@ module.exports = (knex) => {
 
   // update user profile
   router.post('/:id/profile', (req, res) => {
-    const user_id = req.params.id;
+    const user_id = Number(req.params.id);
     const {username, email, password} = req.body;
-    if (req.session.user_id !== user_id) {
-      res.redirect('/users');
-    }
-    if (!username || !email || !password){
+    // if user is not log in redirect to home page
+    if(req.session.user_id !== user_id) {
+      res.redirect('/');
+    // if user not update all three profile
+    }else if(!username || !email || !password) {
       res.send('enter all three input.');
-    } else {
+    }else {
       knex('users')
         .where('id', user_id)
         .update({ username, email, password })
