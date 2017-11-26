@@ -130,6 +130,27 @@ module.exports = (knex) => {
       });
   });
 
+  // post likes
+  router.post('/:id/like', (req, res) => {
+    const resource_id = req.params.id;
+    const user_id = req.session.user_id;
+    knex('likes')
+      .insert({user_id, resource_id})
+      .then(() => {
+        res.redirect(`/resources/${resource_id}`);
+      })
+  });
+
+  // delete like
+  router.delete('/:id/like', (req, res) => {
+    const resource_id = req.params.id;
+    const user_id = req.session.user_id;
+    knex('likes').where('user_id', user_id).andWhere('resource_id', resource_id).del()
+    .then(() => {
+      res.redirect(`/resources/${resource_id}`);
+    })
+  });
+
   return router;
 }
 
