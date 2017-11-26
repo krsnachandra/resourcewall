@@ -53,8 +53,6 @@ module.exports = (knex) => {
       .catch((error) => {
         console.error(error)
       });
-
-    // TODO create a new row in like table
     res.redirect('/');
   });
 
