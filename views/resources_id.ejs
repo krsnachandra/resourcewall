@@ -76,9 +76,11 @@
       
           <div class="commentBox">
             <h3>Comments</h3>
-            <% for(let comment of comments) { %>
-                <li><%= comment.comment %></li><br>
-            <%} %>
+            <ul class="commentList">
+              <% for(let comment of comments) { %>
+                <li class="list-group-item"><%= comment.comment %></li>
+              <%} %>
+            </ul>
           </div>
 
           <form method="post" action="/resources/<%=resource.id%>">
