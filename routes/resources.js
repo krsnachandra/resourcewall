@@ -10,8 +10,8 @@ module.exports = (knex) => {
       res.redirect('/users');
     }
     knex('resources')
-    // .join('likes', 'likes.resource_id', 'resources.id')
-    // .where('likes.user_id', req.session.user_id)
+    .join('likes', 'likes.resource_id', 'resources.id')
+    .where('likes.user_id', req.session.user_id)
     .then((resources) => {
       return Promise.all([
         resources,
@@ -33,8 +33,6 @@ module.exports = (knex) => {
     if (!req.session.user_id) {
       res.redirect('/users');
     }
-    // TODO mark it as **Like** for the given user
-
     res.render('new');
   });
 
@@ -44,18 +42,18 @@ module.exports = (knex) => {
     const { title, url, description, tag } = req.body;
     // create a new row in resource table
     knex("resources")
-      .insert({ url: url, title: title, description: description }).returning('id')
+      .insert({ url, title, description }).returning('id')
       .then((resource_id) => {
-        // create a new row in tag table
-        knex('tags')
-          .insert({ tag_name: tag, resource_id: parseInt(resource_id) })
-          .catch((error) => {
-            console.error(error);
-          });
+        // create a new row in tags table and one in the likes table
+        return Promise.all([
+          knex('tags').insert({ tag_name: tag, resource_id: parseInt(resource_id) }),
+          knex('likes').insert({ user_id: req.session.user_id, resource_id: parseInt(resource_id) }),
+        ])
       })
       .catch((error) => {
         console.error(error)
       });
+
     // TODO create a new row in like table
     res.redirect('/');
   });
