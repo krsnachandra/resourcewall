@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/style.css">
 
   <!-- Modernizr JS -->
-  <script src="scripts/modernizr-2.6.2.min.js"></script>
+  <script src="/scripts/modernizr-2.6.2.min.js"></script>
   <!-- FOR IE9 below -->
   <!--[if lt IE 9]>
   <script src="scripts/respond.min.js"></script>
@@ -40,7 +40,7 @@
       <h1 id="fh5co-logo"><img src="/images/logo.png"</a></h1>
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
-          <li class="fh5co-active"><a href="/resources">Home Page</a></li>
+          <li><a href="/resources">Home Page</a></li>
           <li><a href="/users">logout</a></li>
 
         </ul>
@@ -59,38 +59,35 @@
 
       <div class="fh5co-narrow-content">
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft"><%=resource.title %></h2>
-      <b><%= resource.description %><br></b>
-      <br><a href =<%= resource.url %>><%= resource.url %></a><br>
-      <br><%= resource.description %><br>
-      <br>Average rating: <%= avg %><br>
-      <br>
-  <div class="titleBox">
-      <label>Comments</label>
-    </div>
-   <div class="commentBox">
+        <div class="animate-box" data-animate-effect="fadeInLeft">
+          <b><%= resource.description %><br></b>
+          <a href = "<%= resource.url %>" ><%= resource.url %></a><br>
+          <br><h4>Average rating: <%= avg %></h4>
+          <form method="post" action="/resources/ratings/<%=resource.id%>">
+            <select name="rate">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <input type="submit" class="btn btn-primary btn-sm" value="Submit">
+            </select>
+          </form>
+      
+          <div class="commentBox">
+            <h3>Comments</h3>
+            <% for(let comment of comments) { %>
+                <li><%= comment.comment %></li><br>
+            <%} %>
+          </div>
 
-      <% for (let comment of comments){ %>
-      <div class="commentText">
-        <li><%= comment.comment %></li><br>
-      <%} %>
-
+          <form method="post" action="/resources/<%=resource.id%>">
+            <textarea id= "comments" type="text" class="form-control" name="comment"></textarea>
+            <input type="submit" class="btn btn-primary" value="Submit">
+          </form>
+        </div>
       </div>
-      <form method="post" action='/resources/<%=resource.id%>'>
-        <textarea id= "comments" input type="text" name="comment" autofocus>
-        </textarea>
-        <input type="submit" value="Submit">
-      </form>
-      <br>
-
-      </form>
-
-      <form method="post" action='/resources/ratings/<%=resource.id%>'>
-        Rate: <br>
-        <input type="text" name="rate"> <br>
-        <input type="submit" value="Submit">
-      </form>
-      <br>
-
+    </div>    
 
   <!-- jQuery -->
   <script src="/scripts/jquery.min.js"></script>
