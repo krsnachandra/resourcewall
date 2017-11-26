@@ -19,21 +19,20 @@ module.exports = (knex) => {
       return;
     }
     knex('users').select(1).where('username', username).then((rows) => {
+      // check if username already exist
       if (rows.length) {
-        // username taken
         return Promise.reject({
           message: 'That username is already registered'
         });
-      }
+      }// else check if email already exist
     }).then(() => {
       return knex ('users').select(1).where('email', email).then((rows) => {
         if (rows.length) {
-          // email taken
           return Promise.reject({
             message: 'Email address is already registered'
           });
         } else {
-          // all good
+          // encrypt the password and return it
           return bcrypt.hash(password, 10);
         }
       })
@@ -43,11 +42,13 @@ module.exports = (knex) => {
         email,
         password: passwordDigest
       });
+      // get userid from user table
     }).then(() => {
-      console.log('set a cookie');
-       return knex('users').select('id').where('username', username)
+      return knex('users').select('id').where('username', username);
+      // set a cookie
     }).then((rs)=>{
       req.session.user_id = rs[0].id;
+      // new register go to create new resource page
     }).then(() => {
       res.redirect('/resources/new');
     }).catch((error) => {
@@ -96,10 +97,11 @@ module.exports = (knex) => {
 
   // User profile page
   router.get('/:id/profile', (req, res) => {
-    const user_id = req.params.id;
-    if (!(req.session.user_id == user_id)) {
-      res.redirect('/resources');
-    }
+    const user_id = Number(req.params.id);
+    // if user is not log in redirect to home page
+    if (req.session.user_id !== user_id) {
+      res.redirect('/');
+    }// else read profile
     knex('users')
       .first('*')
       .where('id', user_id)
@@ -112,27 +114,33 @@ module.exports = (knex) => {
 
   // update user profile
   router.post('/:id/profile', (req, res) => {
-    const user_id = req.params.id;
+    const user_id = Number(req.params.id);
     const {username, email, password} = req.body;
-    if (req.session.user_id !== user_id) {
-      res.redirect('/users');
-    }
-    if (!username || !email || !password){
+    // if user is not log in redirect to home page
+    if(req.session.user_id !== user_id) {
+      res.redirect('/');
+    // if user not update all three profile
+    }else if(!username || !email || !password) {
       res.send('enter all three input.');
-    } else {
-      knex('users')
-        .where('id', user_id)
-        .update({ username, email, password })
-        .catch((error) => {
-          console.error(error)
-        })
-        .then(() => {
-          res.redirect(`/users/${user_id}/profile`);
-        });
+    // update user profile in users table
+    }else {
+      // hash the new password
+      let updatePromise = new Promise((resolve) => {
+        // if hash successful go to next promise
+        resolve(bcrypt.hash(password, 10));
+      });
+      // update user profile in users table
+      updatePromise.then((passwordDigest) => {
+        return knex('users').where('id', user_id)
+          .update({ username, email, password: passwordDigest });
+      // redirect to profile page
+      }).then(() => {
+        res.redirect(`/users/${user_id}/profile`);
+      }).catch((error) => {
+        console.error(error)
+      });
     }
-
   });
-
 
   return router;
 };
