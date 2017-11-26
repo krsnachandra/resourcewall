@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/style.css">
 
   <!-- Modernizr JS -->
-  <script src="scripts/modernizr-2.6.2.min.js"></script>
+  <script src="/scripts/modernizr-2.6.2.min.js"></script>
   <!-- FOR IE9 below -->
   <!--[if lt IE 9]>
   <script src="scripts/respond.min.js"></script>
@@ -38,7 +38,7 @@
     <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
     <aside id="fh5co-aside" role="complementary" class="border js-fullheight">
 
-      <h1 id="fh5co-logo"><img src="images/logo.png"></a></h1>
+      <h1 id="fh5co-logo"><img src="/images/logo.png"></a></h1>
       <nav id="fh5co-main-menu" role="navigation">
       </nav>
 
@@ -53,50 +53,47 @@
 
 <div id="fh5co-main">
   <div class="fh5co-narrow-content">
- <h2 class="fh5co-heading animate-box" align = "center" data-animate-effect = "fadeInLeft">Welcome to Resource Wall</h2>
-  </div>
-
-  <div class="container" align="center">
-      <form action="/users/login" align="center" method="post">
-        <h1>Login</h1>
-          <p>
-            <label for="login-email"></label>
-            <input id="login-email" placeholder = "Enter your email" name="email">
-          </p>
-          <p>
-            <label for="login-password"></label>
-            <input id="login-password"  placeholder = "Enter your password" name="password" type="password">
-          </p>
-          <p>
-            <button>Login</button>
-          </p>
-        </form>
+    <h2 class="fh5co-heading animate-box" align = "center" data-animate-effect = "fadeInLeft">Welcome to Resource Wall</h2>
+    <div class="row animate-box" data-animate-effect="fadeInLeft">
+      <div class="container">
         <% if (errors.length) { %>
           <% errors.forEach((error) => { %>
-            <p><%= error %></p>
+            <h3><%= error %>!</h3>
           <% }) %>
         <% } %>
-
-      <form action="/users" method="post" align="center">
-        <h2>Register</h2>
-        <p>
-          <label for="username"></label>
-          <input id="username" placeholder = "Enter your username" name="username">
-        </p>
-        <p>
-          <label for="register-email"></label>
-          <input id="register-email" placeholder = "Enter your email" name="email">
-        </p>
-        <p>
-          <label for="register-password"></label>
-          <input id="register-password" name="password" placeholder = "Enter your password" type="password">
-        </p>
-        <p>
-          <button>Create Account</button>
-        </p>
-      </form>
+        <form action="/users/login" method="POST">
+          <h1>Login</h1>
+          <div class="input-group">
+            <label for="login-email"></label>
+            <input id="login-email" class="form-control" placeholder = "Enter your email" name="email">
+          </div>
+          <div class="input-group">
+            <label for="login-password"></label>
+            <input id="login-password" class="form-control" placeholder = "Enter your password" name="password" type="password">
+          </div>
+          <button class="btn btn-primary">Login</button>
+        </form>
+        <br>
+        <form action="/users" method="POST">
+          <h1>Register</h1>
+          <div class="input-group">
+            <label for="username"></label>
+            <input id="username" class="form-control" placeholder = "Enter your username" name="username">
+          </div>
+          <div class="input-group">
+            <label for="register-email"></label>
+            <input id="register-email" class="form-control" placeholder = "Enter your email" name="email">
+          </div>
+          <div class="input-group">
+            <label for="register-password"></label>
+            <input id="register-password" class="form-control" name="password" placeholder = "Enter your password" type="password">
+          </div>
+          <button class="btn btn-primary">Create Account</button>
+        </form>
+      </div>
     </div>
   </div>
+</div>
 
   <script src="/scripts/jquery.min.js"></script>
   <!-- jQuery Easing -->
