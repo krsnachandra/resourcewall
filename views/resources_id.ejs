@@ -41,8 +41,13 @@
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
           <li><a href="/resources">Home Page</a></li>
-          <li><a href="/users">logout</a></li>
-
+          <li><a href="/users/<%=user.id%>/profile">My Profile</a></li>
+					<li>
+            <form method="POST" id="logoutbtn" action="/users/logout">
+              <!-- <a href="/users/logout"> -->
+              <input type="submit" class="logoutbtn" name="logout" value="LOGOUT">
+            </form>
+          </li>
         </ul>
       </nav>
 
