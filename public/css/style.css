@@ -926,7 +926,9 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
   padding: 8px 20px !important;
 }
 .btn.btn-sm {
-  padding: 4px 15px !important;
+  padding: 1px 15px !important;
+  font-size: 16px !important;
+  margin-left: 10px; 
 }
 .btn.btn-md {
   padding: 8px 20px !important;
