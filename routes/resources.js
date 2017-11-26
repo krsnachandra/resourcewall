@@ -56,7 +56,7 @@ module.exports = (knex) => {
     res.redirect('/');
   });
 
-  // new resource page with comments
+  // Specific resource page
   router.get('/:id', (req, res) => {
     const resourceId = req.params.id;
     if (!req.session.user_id) {
@@ -77,16 +77,35 @@ module.exports = (knex) => {
           knex.avg('rs').from(function() {
             this.sum('rating as rs')
             .from('ratings')
-            .where('resource_id', resource.id)
+            .where('resource_id', resourceId)
             .groupBy('id')
             .as('ratings')
           }).as('ignored_alias')
         ])
       })
     .then(([resource, comments, avgRating]) => {
+      return Promise.all([
+        resource,
+        comments,
+        avgRating,
+        knex('likes').select(1).where('resource_id', resourceId).andWhere('user_id', req.session.user_id)
+      ])
+    })
+    .then(([resource, comments, avgRating, like]) => {
       if (resource) {
         const avg = Number(avgRating[0].avg).toFixed(1);
-        res.render('resources_id', { resource, comments, avg });
+        // const like = (likeArr) =>  {
+        //   if (likeArr) {
+        //     return true;
+        //   } else {
+        //     return false;
+        //   }
+        // };
+        console.log(resource);
+        console.log(comments);
+        console.log(avg);
+        console.log(like);
+        res.render('resources_id', { resource, comments, avg, like });
       } else {
           res.sendStatus(404);
         }
