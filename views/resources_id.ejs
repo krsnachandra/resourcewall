@@ -80,10 +80,15 @@
           </form>
 
           <div>
-            <% if (like) { %>
-              <button type="button" method="delete" action="/resources/<%=resource.id%>/like">Unlike</button>
+            <% if (!like[0]) { %>
+            <form method="post" action="/resources/<%=resource.id%>/like">
+                <button>Like</button>
+              </form>
+
             <% } else { %>
-              <button type="button" method="post" action="/resources/<%=resource.id%>/like">Like</button>
+              <form method="post" action="/resources/<%=resource.id%>/delete">
+                <button>Unlike</button>
+              </form>
             <% } %>
           </div>
 

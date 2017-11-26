@@ -89,7 +89,7 @@ module.exports = (knex) => {
         resource,
         comments,
         avgRating,
-        knex('likes').select(1).where('resource_id', resourceId).andWhere('user_id', req.session.user_id)
+        knex('likes').select('id').where('resource_id', resourceId).andWhere('user_id', req.session.user_id)
       ])
     })
     .then(([resource, comments, avgRating, like]) => {
@@ -144,7 +144,7 @@ module.exports = (knex) => {
   });
 
   // delete like
-  router.delete('/:id/like', (req, res) => {
+  router.post('/:id/delete', (req, res) => {
     const resource_id = req.params.id;
     const user_id = req.session.user_id;
     knex('likes').where('user_id', user_id).andWhere('resource_id', resource_id).del()
