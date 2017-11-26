@@ -28,6 +28,47 @@ module.exports = (knex) => {
     })
   });
 
+  //Searching for a resource
+router.get('/search', (req, res) => {
+  knex('tags').join('resources', 'resources.id', 'tags.resource_id')
+    .where('tag_name', 'app')
+    .then((resources) => {
+      return Promise.all([
+        resources,
+        knex('tags')
+          .where('resource_id', 'in', resources.map(r => r.resource_id))
+      ]);
+    }).then(([resources, tags]) => {
+      resources.forEach(resource => {
+        resource.tags = tags.filter(tag => {
+         return tag.resource_id === resource.resource_id;
+        })
+      })
+      res.render('search', { resources })
+    })
+//   knex('tags')
+//   .where('tag_name', 'app')
+//   .then((tags)=> {
+//     return Promise.all([
+//       tags,
+//       knex('resources')
+//       .where('id', tags.resource_id)
+//     ]).then(([tags, resources]) => {
+//       resources.forEach(resource => {
+//         resource.tags = tags.filter(tag =>{
+//           return tag.resource_id === resource.resource_id;
+//         })
+//       })
+//       res.render('search', { tags, resources });
+//     })
+
+//   })
+//   .catch((error) => {
+//     console.error(error)
+//   });
+});
+
+
   // New resource
   router.get('/new', (req, res) => {
     if (!req.session.user_id) {
@@ -113,6 +154,7 @@ module.exports = (knex) => {
         console.error(error)
     });
   });
+
 
 
   // post comments
