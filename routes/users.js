@@ -122,20 +122,25 @@ module.exports = (knex) => {
     // if user not update all three profile
     }else if(!username || !email || !password) {
       res.send('enter all three input.');
+    // update user profile in users table
     }else {
-      knex('users')
-        .where('id', user_id)
-        .update({ username, email, password })
-        .catch((error) => {
-          console.error(error)
-        })
-        .then(() => {
-          res.redirect(`/users/${user_id}/profile`);
-        });
+      // hash the new password
+      let updatePromise = new Promise((resolve) => {
+        // if hash successful go to next promise
+        resolve(bcrypt.hash(password, 10));
+      });
+      // update user profile in users table
+      updatePromise.then((passwordDigest) => {
+        return knex('users').where('id', user_id)
+          .update({ username, email, password: passwordDigest });
+      // redirect to profile page
+      }).then(() => {
+        res.redirect(`/users/${user_id}/profile`);
+      }).catch((error) => {
+        console.error(error)
+      });
     }
-
   });
-
 
   return router;
 };
