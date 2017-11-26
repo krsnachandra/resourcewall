@@ -16,12 +16,12 @@ module.exports = (knex) => {
       return Promise.all([
         resources,
         knex('tags')
-          .where('resource_id', 'in', resources.map(r => r.id))
+          .where('resource_id', 'in', resources.map(r => r.resource_id))
       ]);
     }).then(([resources, tags]) => {
       resources.forEach(resource => {
         resource.tags = tags.filter(tag => {
-         return tag.resource_id === resource.id;
+         return tag.resource_id === resource.resource_id;
         })
       })
       res.render('index', { resources })
