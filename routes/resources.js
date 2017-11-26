@@ -67,7 +67,8 @@ module.exports = (knex) => {
         .first("*")
         .where('id', resourceId),
       knex('comments')
-        .select('comment')
+        .join('users', 'users.id', 'comments.user_id')
+        .select('users.id', 'users.username', 'comments.comment', 'comments.resource_id')
         .where('resource_id', resourceId)
     ])
     .then(([resource, comments]) => {
