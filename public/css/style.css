@@ -90,7 +90,8 @@
   padding: 2%;
   font-size:1.2em;
   margin: auto;
-  background-color:White;
+  margin-bottom: 10px; 
+  background-color: transparent;
 }
 
 /*Site-wide CSS*/
