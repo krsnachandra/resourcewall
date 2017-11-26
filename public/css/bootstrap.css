@@ -157,6 +157,8 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+
+
 button[disabled],
 html input[disabled] {
   cursor: default;
@@ -307,6 +309,34 @@ th {
   .table-bordered td {
     border: 1px solid #ddd !important;
   }
+}
+
+.logoutbtn {
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 300;
+  position: relative;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  letter-spacing: .2em;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  outline: none;
+  border: 0px;
+  box-sizing: none;
+  background-color: transparent;
+}
+
+.logoutbtn:hover {
+  color: #da1212;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
 }
 * {
   -webkit-box-sizing: border-box;
