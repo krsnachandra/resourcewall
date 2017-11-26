@@ -67,6 +67,9 @@
         <div class="animate-box" data-animate-effect="fadeInLeft">
           <b><%= resource.description %><br></b>
           <a href = "<%= resource.url %>" ><%= resource.url %></a><br>
+          <% for (let tag of tags){ %>
+            <label class="label label-primary"><%= tag.tag_name %></label>
+          <% } %>
           <br><h4>Average rating: <%= avg %></h4>
           <form method="post" action="/resources/ratings/<%=resource.id%>">
             <select name="rate">

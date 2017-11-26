@@ -91,12 +91,21 @@ module.exports = (knex) => {
         avgRating,
         knex('likes').select('id').where('resource_id', resourceId).andWhere('user_id', req.session.user_id)
       ])
-    })
-    .then(([resource, comments, avgRating, like]) => {
+    }).then(([resource, comments, avgRating, like]) => {
+      console.log(resource);
+      return Promise.all([
+        resource,
+        comments,
+        avgRating,
+        like,
+        knex('tags')
+          .where('resource_id', resource.id)
+      ]);
+    }).then(([resource, comments, avgRating, like, tags]) => {
       if (resource) {
         console.log(like);
         const avg = Number(avgRating[0].avg).toFixed(1);
-        res.render('resources_id', { resource, comments, avg, like });
+        res.render('resources_id', { resource, comments, avg, like, tags });
       } else {
           res.sendStatus(404);
         }
