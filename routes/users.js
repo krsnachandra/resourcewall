@@ -97,22 +97,26 @@ module.exports = (knex) => {
   // User profile page
   router.get('/:id/profile', (req, res) => {
     const user_id = req.params.id;
+    if (!(req.session.user_id == user_id)) {
+      res.redirect('/resources');
+    }
     knex('users')
       .first('*')
       .where('id', user_id)
-      .catch((error) => {
+      .then((user) => {
+        res.render('profile', {user});
+      }).catch((error) => {
         console.error(error)
       })
-      .then((users) => {
-        console.log(users);
-        res.render('profile', {users});
-      });
   });
 
   // update user profile
   router.post('/:id/profile', (req, res) => {
     const user_id = req.params.id;
     const {username, email, password} = req.body;
+    if (req.session.user_id !== user_id) {
+      res.redirect('/users');
+    }
     if (!username || !email || !password){
       res.send('enter all three input.');
     } else {

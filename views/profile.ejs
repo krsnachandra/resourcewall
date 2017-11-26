@@ -46,7 +46,7 @@
         <ul>
           <li class="fh5co-active"><a href="/resources">Home Page</a></li>
           <li><a href="/resources/new">new!</a></li>
-          <li><a href="/users/<%=users.id%>/profile">My Profile</a></li>
+          <li><a href="/user/<%=user.id%>/profile">My Profile</a></li>
           <li><a href="logout.html">logout</a></li>
 
 
@@ -67,7 +67,7 @@
 
       <div class="fh5co-narrow-content">
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Change your details</h2>
-    <form method="post" action="/users/<%=users.id%>/profile">
+    <form method="post" action="/users/<%=user.id%>/profile">
       <br>
       <input type="text" name="username" placeholder="new username"><br>
       <input type="email" name="email" placeholder="new email"><br>

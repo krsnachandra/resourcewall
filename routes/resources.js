@@ -6,7 +6,10 @@ const router = express.Router();
 module.exports = (knex) => {
 
   router.get("/", (req, res) => {
-  knex('resources')
+    if (!req.session.user_id) {
+      res.redirect('/users');
+    }
+    knex('resources')
     // .join('likes', 'likes.resource_id', 'resources.id')
     // .where('likes.user_id', req.session.user_id)
     .then((resources) => {
@@ -27,6 +30,9 @@ module.exports = (knex) => {
 
   // New resource
   router.get('/new', (req, res) => {
+    if (!req.session.user_id) {
+      res.redirect('/users');
+    }
     // TODO mark it as **Like** for the given user
 
     res.render('new');
@@ -57,6 +63,9 @@ module.exports = (knex) => {
   // new resource page with comments
   router.get('/:id', (req, res) => {
     const resourceId = req.params.id;
+    if (!req.session.user_id) {
+      res.redirect('/users');
+    }
     Promise.all([
       knex("resources")
         .first("*")
