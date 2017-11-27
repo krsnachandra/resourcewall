@@ -31,7 +31,6 @@ module.exports = (knex) => {
   //Searching for a resource
 router.get('/search', (req, res) => {
   const search = req.query.search;
-  console.log(search);
   knex('tags').join('resources', 'resources.id', 'tags.resource_id')
     .where('tag_name', search)
     .then((resources) => {
@@ -60,7 +59,6 @@ router.get('/search', (req, res) => {
 
   // Save new resource to database along with like and tags
   router.post('/', (req, res) => {
-    // console.log(req.body);
     const { title, url, description, tag } = req.body;
     // create a new row in resource table
     knex("resources")
@@ -114,7 +112,6 @@ router.get('/search', (req, res) => {
         knex('likes').select('id').where('resource_id', resourceId).andWhere('user_id', req.session.user_id)
       ])
     }).then(([resource, comments, avgRating, like]) => {
-      console.log(resource);
       return Promise.all([
         resource,
         comments,
@@ -125,7 +122,6 @@ router.get('/search', (req, res) => {
       ]);
     }).then(([resource, comments, avgRating, like, tags]) => {
       if (resource) {
-        console.log(like);
         const avg = Number(avgRating[0].avg).toFixed(1);
         res.render('resources_id', { resource, comments, avg, like, tags });
       } else {
