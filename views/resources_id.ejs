@@ -61,7 +61,8 @@
     </aside>
 
     <div id="fh5co-main">
-
+      <input method = "GET" action="/resources/search" type="text" name="search" placeholder="Search..">
+        <button>Submit</button>
       <div class="fh5co-narrow-content">
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft"><%=resource.title %></h2>
         <div class="animate-box" data-animate-effect="fadeInLeft">
@@ -76,7 +77,7 @@
               </form>
             <% } %>
           </div>
-        
+
           <b><%= resource.description %><br></b>
           <a href = "<%= resource.url %>" ><%= resource.url %></a><br>
           <% for (let tag of tags){ %>
