@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "local": "./node_modules/.bin/nodemon --ignore public/",
-    "knex": "./node_modules/.bin/knex"
+    "knex": "./node_modules/.bin/knex",
+    "lint": "eslint '**/*.{js,jsx}' --quiet",
+    "format": "prettier --write '**/*.{js,jsx}'"
   },
   "author": "Lighthouse Labs",
   "license": "ISC",
@@ -26,6 +28,13 @@
     "pg": "^7.4.0"
   },
   "devDependencies": {
-    "nodemon": "^1.9.2"
+    "eslint": "^4.12.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "nodemon": "^1.9.2",
+    "prettier": "^1.8.2"
   }
 }
