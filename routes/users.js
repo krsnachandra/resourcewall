@@ -1,6 +1,5 @@
-"use strict";
-
 const express = require('express');
+
 const router  = express.Router();
 const bcrypt = require('bcrypt');
 
@@ -78,10 +77,9 @@ module.exports = (knex) => {
           return Promise.reject({
             message: 'Incorrect password'
           });
-        } else {
-          req.session.user_id = user[0].id;
-          res.redirect('/resources');
         }
+        req.session.user_id = user[0].id;
+        res.redirect('/resources');
       })
     }).catch((error) => {
       req.flash('error', error.message);
@@ -127,7 +125,7 @@ module.exports = (knex) => {
     // update user profile in users table
     } else {
       // hash the new password
-      let updatePromise = new Promise((resolve) => {
+      const updatePromise = new Promise((resolve) => {
         // if hash successful go to next promise
         resolve(bcrypt.hash(password, 10));
       });

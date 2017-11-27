@@ -1,6 +1,5 @@
-"use strict";
-
 const express = require('express');
+
 const router = express.Router();
 
 module.exports = (knex) => {
@@ -28,7 +27,7 @@ module.exports = (knex) => {
     })
   });
 
-  //Searching for a resource
+  // Searching for a resource
 router.get('/search', (req, res) => {
   const search = req.query.search;
   knex('tags').join('resources', 'resources.id', 'tags.resource_id')
