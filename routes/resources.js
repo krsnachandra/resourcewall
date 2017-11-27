@@ -30,8 +30,10 @@ module.exports = (knex) => {
 
   //Searching for a resource
 router.get('/search', (req, res) => {
+  const search = req.query.search;
+  console.log(search);
   knex('tags').join('resources', 'resources.id', 'tags.resource_id')
-    .where('tag_name', req.body)
+    .where('tag_name', search)
     .then((resources) => {
       return Promise.all([
         resources,
@@ -46,6 +48,9 @@ router.get('/search', (req, res) => {
       })
       res.render('search', { resources })
     })
+
+
+
 //   knex('tags')
 //   .where('tag_name', 'app')
 //   .then((tags)=> {
