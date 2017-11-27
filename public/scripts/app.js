@@ -1,11 +1,27 @@
 // dom ready
-jQuery(document).ready(() => {
+$(() => {
+  // console.log(resource);
   const $like = $('.like');
-  $like.on('submit', updateLike());
+  $like.on('submit', loadResource());
 });
 
-function updateLike() {
-  if (!like[0]) {
+function loadResource() {
+  
+  $.ajax({
+    url: `/resources/${req.params.id}`,
+    method: 'GET',
+    success: (resource, like) => {
+      console.log('i am here');
+      updateLike(resource, like);
+    }
+  });
+}
+
+function updateLike(resource, like) {
+  console.log(typeof(resource));
+  console.log(resource);
+  console.log(like);
+  if (!like) {
     $.ajax({
       url: `/resources/${resource.id}/like`,
       method: 'POST'
