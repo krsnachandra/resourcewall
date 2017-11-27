@@ -29,8 +29,6 @@
   <!--[if lt IE 9]>
   <script src="scripts/respond.min.js"></script>
   <![endif]-->
-  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-  <script type="text/javascript" src="/scripts/app.js"></script>
 
 
   </head>
@@ -74,7 +72,15 @@
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft"><%=resource.title %></h2>
         <div class="animate-box" data-animate-effect="fadeInLeft">
           <div class="likeButton" data-animate-effect="fadeInLeft">
-            <input class="like" type="image" src="/images/like.png" width="48" height="48">
+            <% if (!like[0]) { %>
+              <form method="post" action="/resources/<%=resource.id%>/like">
+                <input type="image" src="/images/unlike.png" width="48" height="48">
+              </form>
+            <% } else { %>
+              <form method="post" action="/resources/<%=resource.id%>/delete">
+                <input type="image" src="/images/like.png" width="48" height="48">
+              </form>
+            <% } %>
           </div>
 
           <b><%= resource.description %><br></b>
