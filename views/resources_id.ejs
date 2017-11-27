@@ -53,7 +53,7 @@
 
       <div class="fh5co-footer">
         <small>
-          <span>&copy; 2017 Made by .</span>
+          <span>&copy; 2017 Made by Chandra & Jimmy & Thomas</span>
           <span>Designed by <a href="http://freehtml5.co/" target="_blank">FreeHTML5.co</a> </span>
         </small>
       </div>
@@ -61,9 +61,13 @@
     </aside>
 
     <div id="fh5co-main">
-      <input method = "GET" action="/resources/search" type="text" name="search" placeholder="Search..">
-        <button>Submit</button>
       <div class="fh5co-narrow-content">
+        <div class="input-group">
+          <form method = "GET" action="/resources/search" >
+            <input type="text" class="form-control" name="search" placeholder="Search resources!">
+          </form>
+        </div>
+        <br>
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft"><%=resource.title %></h2>
         <div class="animate-box" data-animate-effect="fadeInLeft">
           <div class="likeButton" data-animate-effect="fadeInLeft">

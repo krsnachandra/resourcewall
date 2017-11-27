@@ -53,7 +53,7 @@
 
       <div class="fh5co-footer">
         <small>
-          <span>&copy; 2017 Made by .</span>
+          <span>&copy; 2017 Made by Chandra & Jimmy & Thomas</span>
           <span>Designed by <a href="http://freehtml5.co/" target="_blank">FreeHTML5.co</a> </span>
         </small>
       </div>
@@ -61,27 +61,29 @@
     </aside>
 
     <div id="fh5co-main">
-
-         <div class="fh5co-narrow-content">
-        <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Search Results</h2>
-        <div class="row animate-box" data-animate-effect="fadeInLeft">
-
-          <% for(let resource of resources) { %>
-              <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12 work-item">
-                <a href="/resources/<%= resource.resource_id %>">
-                  <h3 class="fh5co-work-title"><%= resource.title %></h3>
-                  <p><%= resource.description %></p>
-                  <% for (let tag of resource.tags){ %>
-                    <label class="label label-primary"><%= tag.tag_name %></label>
-                  <% } %>
-                </a>
-              </div>
-          <% } %>
-
-
+      <div class="fh5co-narrow-content">
+      <div class="input-group">
+        <form method = "GET" action="/resources/search" >
+          <input type="text" class="form-control" name="search" placeholder="Search resources!">
+        </form>
       </div>
+      <br>
+      <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Search Results</h2>
+      <div class="row animate-box" data-animate-effect="fadeInLeft">
+        <% for(let resource of resources) { %>
+            <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12 work-item">
+              <a href="/resources/<%= resource.resource_id %>">
+                <h3 class="fh5co-work-title"><%= resource.title %></h3>
+                <p><%= resource.description %></p>
+                <% for (let tag of resource.tags){ %>
+                  <label class="label label-primary"><%= tag.tag_name %></label>
+                <% } %>
+              </a>
+            </div>
+        <% } %>
       </div>
     </div>
+  </div>
 
   <!-- jQuery -->
   <script src="/scripts/jquery.min.js"></script>
