@@ -48,31 +48,7 @@ router.get('/search', (req, res) => {
       })
       res.render('search', { resources })
     })
-
-
-
-//   knex('tags')
-//   .where('tag_name', 'app')
-//   .then((tags)=> {
-//     return Promise.all([
-//       tags,
-//       knex('resources')
-//       .where('id', tags.resource_id)
-//     ]).then(([tags, resources]) => {
-//       resources.forEach(resource => {
-//         resource.tags = tags.filter(tag =>{
-//           return tag.resource_id === resource.resource_id;
-//         })
-//       })
-//       res.render('search', { tags, resources });
-//     })
-
-//   })
-//   .catch((error) => {
-//     console.error(error)
-//   });
 });
-
 
   // New resource
   router.get('/new', (req, res) => {
