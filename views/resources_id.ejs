@@ -29,6 +29,9 @@
   <!--[if lt IE 9]>
   <script src="scripts/respond.min.js"></script>
   <![endif]-->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+
 
   </head>
 
@@ -40,7 +43,7 @@
       <h1 id="fh5co-logo"><img src="/images/logo.png"</a></h1>
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
-          <li><a href="/resources">Home Page</a></li>
+          <li><a href="/resources">Resources</a></li>
           <li><a href="/resources/new">new!</a></li>
           <li><a href="/users/<%=user_id%>/profile">My Profile</a></li>
 					<li>
@@ -71,15 +74,7 @@
         <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft"><%=resource.title %></h2>
         <div class="animate-box" data-animate-effect="fadeInLeft">
           <div class="likeButton" data-animate-effect="fadeInLeft">
-            <% if (!like[0]) { %>
-              <form method="post" action="/resources/<%=resource.id%>/like">
-                <input type="image" src="/images/unlike.png" width="48" height="48">
-              </form>
-            <% } else { %>
-              <form method="post" action="/resources/<%=resource.id%>/delete">
-                <input type="image" src="/images/like.png" width="48" height="48">
-              </form>
-            <% } %>
+            <input class="like" type="image" src="/images/like.png" width="48" height="48">
           </div>
 
           <b><%= resource.description %><br></b>
