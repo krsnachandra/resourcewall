@@ -94,11 +94,11 @@
           <h3>Average rating: <%= avg %></h3>
           <form method="post" action="/resources/ratings/<%=resource.id%>">
             <select name="rate">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
               <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
               <input type="submit" class="btn btn-primary btn-sm" value="Rate now!">
             </select>
           </form>
