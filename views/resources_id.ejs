@@ -86,7 +86,9 @@
           <b><%= resource.description %><br></b>
           <a href = "<%= resource.url %>" ><%= resource.url %></a><br>
           <% for (let tag of tags){ %>
-            <label class="label label-primary"><%= tag.tag_name %></label>
+            <a href="/resources/search?search=<%= tag.tag_name %>">
+              <label class="label label-primary"><%= tag.tag_name %></label>
+            </a>
           <% } %>
           <br>
           <h3>Average rating: <%= avg %></h3>

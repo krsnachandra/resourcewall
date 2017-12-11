@@ -77,14 +77,16 @@
 				<div class="row animate-box" data-animate-effect="fadeInLeft">
 
           <% for(let resource of resources) { %>
-              <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12 work-item">
-                <a href="/resources/<%= resource.resource_id %>">
-                  <h3 class="fh5co-work-title"><%= resource.title %></h3>
-							    <p><%= resource.description %></p>
-                  <% for (let tag of resource.tags){ %>
-                    <label class="label label-primary"><%= tag.tag_name %></label>
-                  <% } %>
+            <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12 work-item">
+              <a href="/resources/<%= resource.resource_id %>">
+                <h3 class="fh5co-work-title"><%= resource.title %></h3>
+						    <p><%= resource.description %></p>
                 </a>
+                  <% for (let tag of resource.tags){ %>
+                    <a href="/resources/search?search=<%= tag.tag_name %>">
+                      <label class="label label-primary"><%= tag.tag_name %></label>
+                    </a>
+                  <% } %>
               </div>
           <% } %>
 
